@@ -1,0 +1,151 @@
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .sidebar-header {
+        padding: 10px;
+    }
+
+    .sidebar-header span {
+        font-size: 16px !important;
+    }
+
+    .sidebar-menu {
+        display: flex;
+        flex-direction: row;
+        background-color: #dc0000;
+    }
+
+    .sidebar-menu li {
+        flex: 1;
+    }
+
+    .sidebar-menu li a {
+        padding: 10px;
+        text-align: center;
+        font-size: 12px;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+
+    .content-section {
+        margin: 15px;
+        padding: 20px;
+    }
+
+    .page-title {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    .certificates-box,
+    .requests-box {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .certificate-item {
+        padding: 10px;
+    }
+
+    table {
+        font-size: 12px;
+    }
+
+    table th,
+    table td {
+        padding: 8px;
+    }
+
+    .btn-print,
+    .btn-reason {
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .btn-submit {
+        width: 100%;
+    }
+
+    .cert-signature {
+        flex-direction: column;
+    }
+
+    .cert-signature-block {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .top-bar {
+        padding: 10px 15px;
+    }
+
+    .logout-btn {
+        padding: 8px 15px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar-header a {
+        justify-content: center;
+    }
+
+    .sidebar-header img {
+        width: 30px;
+        height: 30px;
+        margin-right: 5px;
+    }
+
+    .page-title {
+        font-size: 18px;
+    }
+
+    .certificates-title,
+    .requests-title {
+        font-size: 16px;
+    }
+
+    table {
+        font-size: 10px;
+    }
+
+    table th,
+    table td {
+        padding: 6px;
+    }
+
+    .certificate-name {
+        font-size: 12px;
+    }
+
+    .certificate-price {
+        font-size: 10px;
+    }
+
+    .cert-content {
+        font-size: 11px;
+    }
+
+    .cert-header h3 {
+        font-size: 12px;
+    }
+
+    .cert-header h2 {
+        font-size: 16px;
+    }
+
+    .cert-title {
+        font-size: 16px;
+    }
+}
