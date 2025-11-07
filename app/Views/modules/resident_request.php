@@ -338,7 +338,6 @@
             background-color: #e68900;
         }
 
-        /* Certificate Print Styles */
         .certificate-box {
             background-color: white;
             padding: 40px;
@@ -415,61 +414,152 @@
             color: #666;
         }
 
-@media print {
-    body {
-        margin: 0;
-        padding: 0;
-        background: white;
-    }
-    .sidebar {
-        display: none;
-    }
-    .main-content {
-        margin-left: 0;
-        padding: 0;
-        background: white;
-    }
-    .top-bar {
-        display: none;
-    }
-    .content-section {
-        display: none;
-    }
-    .requests-box {
-        display: none;
-    }
-    .certificates-box {
-        display: none;
-    }
-    .modal-header, .modal-footer {
-        display: none;
-    }
-    .modal-dialog {
-        max-width: 100%;
-        margin: 0;
-        padding: 0;
-    }
-    .modal-content {
-        border: none;
-        box-shadow: none;
-    }
-    .modal-body {
-        max-height: none;
-        overflow: visible;
-        padding: 0;
-    }
-    .certificate-box {
-        border: none;
-        margin: 0;
-        padding: 40px;
-        box-shadow: none;
-    }
-}
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                left: 0;
+                top: 0;
+            }
 
+            .main-content {
+                margin-left: 0;
+            }
+
+            .content-section {
+                margin: 15px;
+                padding: 20px;
+            }
+
+            .top-bar {
+                padding: 15px;
+            }
+
+            .page-title {
+                font-size: 20px;
+            }
+
+            .certificates-box, .requests-box {
+                padding: 15px;
+            }
+
+            .certificate-item {
+                padding: 10px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            table th, table td {
+                padding: 8px;
+            }
+
+            .btn-print, .btn-reason {
+                padding: 4px 8px;
+                font-size: 10px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .sidebar-header span {
+                display: none;
+            }
+
+            .content-section {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            .page-title {
+                font-size: 18px;
+            }
+
+            .certificates-box, .requests-box {
+                padding: 10px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn-submit, .btn-back {
+                width: 100%;
+            }
+
+            table {
+                font-size: 11px;
+            }
+
+            table th, table td {
+                padding: 6px;
+            }
+
+            .certificate-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .certificate-item input[type="checkbox"] {
+                margin-bottom: 10px;
+            }
+        }
+
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+                background: white;
+            }
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 0;
+                background: white;
+            }
+            .top-bar {
+                display: none;
+            }
+            .content-section {
+                display: none;
+            }
+            .requests-box {
+                display: none;
+            }
+            .certificates-box {
+                display: none;
+            }
+            .modal-header, .modal-footer {
+                display: none;
+            }
+            .modal-dialog {
+                max-width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            .modal-content {
+                border: none;
+                box-shadow: none;
+            }
+            .modal-body {
+                max-height: none;
+                overflow: visible;
+                padding: 0;
+            }
+            .certificate-box {
+                border: none;
+                margin: 0;
+                padding: 40px;
+                box-shadow: none;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- SIDEBAR -->
     <div class="sidebar">
         <div class="sidebar-header">
             <a href="<?php echo base_url('resident/dashboard'); ?>">
@@ -496,18 +586,13 @@
         </ul>
     </div>
 
-    <!-- MAIN CONTENT -->
     <div class="main-content">
-        <!-- TOP BAR -->
         <div class="top-bar">
             <a href="<?php echo base_url('logout'); ?>" class="logout-btn">Logout</a>
         </div>
-
         <div class="content-section">
-            <!-- PAGE TITLE -->
-            <div class="page-title">Request Certificates</div>
 
-            <!-- SUCCESS/ERROR MESSAGES -->
+            <div class="page-title">Request Certificates</div>
             <?php if (session()->getFlashdata('success')): ?>
                 <div class="alert alert-success">
                     <strong>Success!</strong> <?php echo session()->getFlashdata('success'); ?>
@@ -520,15 +605,12 @@
                 </div>
             <?php endif; ?>
 
-            <!-- CERTIFICATES FORM -->
             <div class="certificates-box">
                 <div class="certificates-title">Select Certificates</div>
 
-                <!-- FORM WITH VALIDATION -->
                 <form method="POST" action="<?php echo base_url('resident/request/submit'); ?>" onsubmit="return validateForm(event)">
                     <?php echo csrf_field(); ?>
 
-                    <!-- BARANGAY CLEARANCE -->
                     <div class="certificate-item">
                         <div class="certificate-header">
                             <input type="checkbox" name="certificates[]" value="Barangay Clearance" id="cert1" onchange="togglePurpose(this, 'purpose-1')">
@@ -544,7 +626,6 @@
                         </div>
                     </div>
 
-                    <!-- BUSINESS CLEARANCE -->
                     <div class="certificate-item">
                         <div class="certificate-header">
                             <input type="checkbox" name="certificates[]" value="Business Clearance" id="cert2" onchange="togglePurpose(this, 'purpose-2')">
@@ -560,7 +641,6 @@
                         </div>
                     </div>
 
-                    <!-- BARANGAY CERTIFICATE -->
                     <div class="certificate-item">
                         <div class="certificate-header">
                             <input type="checkbox" name="certificates[]" value="Barangay Certificate" id="cert3" onchange="togglePurpose(this, 'purpose-3')">
@@ -576,7 +656,6 @@
                         </div>
                     </div>
 
-                    <!-- CERTIFICATE OF INDIGENCY -->
                     <div class="certificate-item">
                         <div class="certificate-header">
                             <input type="checkbox" name="certificates[]" value="Certificate of Indigency" id="cert4" onchange="togglePurpose(this, 'purpose-4')">
@@ -592,7 +671,6 @@
                         </div>
                     </div>
 
-                    <!-- MEDICAL ASSISTANCE -->
                     <div class="certificate-item">
                         <div class="certificate-header">
                             <input type="checkbox" name="certificates[]" value="Medical Assistance" id="cert5" onchange="togglePurpose(this, 'purpose-5')">
@@ -614,48 +692,48 @@
                 </form>
             </div>
 
-            <!-- CERTIFICATE REQUESTS TABLE -->
             <div class="requests-box">
                 <div class="requests-title">Certificate Requests</div>
 
                 <?php if (!empty($requests)): ?>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Certificate Name</th>
-                                <th>Price</th>
-                                <th>Request Date</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($requests as $req): ?>
+                    <div style="overflow-x: auto;">
+                        <table>
+                            <thead>
                                 <tr>
-                                    <td><?php echo htmlspecialchars($req['id']); ?></td>
-                                    <td><?php echo htmlspecialchars($req['cert_type']); ?></td>
-                                    <td>₱ 0.00</td>
-                                    <td><?php echo date('Y-m-d', strtotime($req['created_at'])); ?></td>
-                                    <td>
-                                        <span class="status-badge status-<?php echo strtolower($req['status']); ?>">
-                                            <?php echo htmlspecialchars($req['status']); ?>
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <?php if ($req['status'] === 'Approved'): ?>
-                                            <button class="btn-print" type="button" onclick="openPrintModal('<?php echo addslashes($req['fname']); ?>', '<?php echo addslashes($req['lname']); ?>', '<?php echo addslashes($req['cert_type']); ?>', '<?php echo addslashes($req['purpose']); ?>', '<?php echo htmlspecialchars($req['community_tax_no']); ?>')">Print</button>
-                                        <?php endif; ?>
-                                        
-                                        <?php if ($req['status'] === 'Rejected'): ?>
-                                            <button class="btn-reason" type="button" onclick="showReason('<?php echo addslashes(htmlspecialchars($req['remarks'])); ?>')">View Reason</button>
-
-                                        <?php endif; ?>
-                                    </td>
+                                    <th>ID</th>
+                                    <th>Certificate Name</th>
+                                    <th>Price</th>
+                                    <th>Request Date</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($requests as $req): ?>
+                                    <tr>
+                                        <td><?php echo htmlspecialchars($req['id']); ?></td>
+                                        <td><?php echo htmlspecialchars($req['cert_type']); ?></td>
+                                        <td>₱ 0.00</td>
+                                        <td><?php echo date('Y-m-d', strtotime($req['created_at'])); ?></td>
+                                        <td>
+                                            <span class="status-badge status-<?php echo strtolower($req['status']); ?>">
+                                                <?php echo htmlspecialchars($req['status']); ?>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <?php if ($req['status'] === 'Approved'): ?>
+                                                <button class="btn-print" type="button" onclick="openPrintModal('<?php echo addslashes($req['fname']); ?>', '<?php echo addslashes($req['lname']); ?>', '<?php echo addslashes($req['cert_type']); ?>', '<?php echo addslashes($req['purpose']); ?>', '<?php echo htmlspecialchars($req['community_tax_no']); ?>')">Print</button>
+                                            <?php endif; ?>
+                                            
+                                            <?php if ($req['status'] === 'Rejected'): ?>
+                                                <button class="btn-reason" type="button" onclick="showReason('<?php echo addslashes(htmlspecialchars($req['remarks'])); ?>')">View Reason</button>
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 <?php else: ?>
                     <div class="no-requests">
                         No certificate requests yet. Submit one above!
@@ -665,7 +743,6 @@
         </div>
     </div>
 
-    <!-- PRINT CERTIFICATE MODAL -->
     <div class="modal fade" id="printCertificateModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -725,7 +802,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // Toggle purpose textarea when checkbox is checked/unchecked
         function togglePurpose(checkbox, purposeId) {
             var purposeDiv = document.getElementById(purposeId);
             if (checkbox.checked) {
@@ -736,8 +812,6 @@
             }
         }
 
-        // Validate form before submit
-
         function validateForm(event) {
             var checkboxes = document.querySelectorAll('input[name="certificates[]"]:checked');
             
@@ -746,13 +820,10 @@
                 alert('Please select at least one certificate!');
                 return false;
             }
-            
-            // For each checked certificate, validate purpose is filled
+
             for (var i = 0; i < checkboxes.length; i++) {
                 var cert = checkboxes[i];
                 var certValue = cert.value;
-                
-                // Get the purpose textarea by matching the certificate name
                 var purposeTextarea = document.querySelector('textarea[name="purpose[' + certValue + ']"]');
                 
                 if (purposeTextarea && purposeTextarea.value.trim() === '') {
@@ -765,8 +836,6 @@
             return true;
         }
 
-
-        // Open print modal and fill certificate details
         function openPrintModal(fname, lname, certtype, purpose, taxNo) {
             document.getElementById('cert-name').textContent = fname + ' ' + lname;
             document.getElementById('cert-title-text').textContent = certtype;
@@ -782,8 +851,7 @@
             
             document.getElementById('cert-day').textContent = todayDay;
             document.getElementById('cert-month').textContent = currentMonth + ' ' + currentYear;
-            
-            // If taxNo is empty, use random. Otherwise use database value
+
             if (taxNo && taxNo.trim() !== '') {
                 document.getElementById('cert-tax-no').textContent = 'CTC-' + taxNo;
             } else {
@@ -798,7 +866,6 @@
             printModal.show();
         }
 
-        // Show rejection reason
         function showReason(reason) {
             if (reason && reason.trim() !== '') {
                 alert('Reason for Rejection:\n\n' + reason);
@@ -806,8 +873,6 @@
                 alert('No reason provided for rejection.');
             }
         }
-
-
     </script>
 </body>
 </html>

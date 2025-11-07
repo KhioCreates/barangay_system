@@ -33,17 +33,14 @@ class LoginController extends BaseController
         if ($this->validateData($data, $rules)) {
             $validatedData = $this->validator->getValidated();
             
-            // Check users table
             $usersModel = model(name: 'UsersModel');
             $user = $usersModel->getUserByUsername($validatedData['username']);
 
             if (!empty($user)) {
-                // Check if password matches (try both hashed and plain text)
                 $passwordMatch = password_verify($validatedData['password'], $user['password']) || 
                                  $user['password'] === $validatedData['password'];
                 
                 if ($passwordMatch) {
-                    // Get resident info if it's a resident
                     $db = db_connect();
                     $resident = null;
                     
@@ -51,7 +48,6 @@ class LoginController extends BaseController
                         $resident = $db->query("SELECT id FROM residents WHERE username = ?", [$user['username']])->getRowArray();
                     }
                     
-                    // Store in session with resident info
                     $userData = [
                         'id' => $user['id'],
                         'username' => $user['username'],
@@ -63,7 +59,6 @@ class LoginController extends BaseController
                     
                     session()->set('user', $userData);
                     
-                    // Redirect based on role
                     if ($user['role'] == 'admin') {
                         return redirect()->to('/admin/dashboard');
                     } else {

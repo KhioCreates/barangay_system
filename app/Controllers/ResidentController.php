@@ -6,17 +6,51 @@ use CodeIgniter\Controller;
 
 class ResidentController extends Controller
 {
-    // Admin functions (no session check needed - admin only)
-    public function index()
-    {
-        if (!session()->has('user')) {
-            return redirect()->to('/login');
-        }
-
-        $db = db_connect();
-        $residents = $db->query("SELECT * FROM residents")->getResultArray();
-        return view('modules/manage_residents', ['residents' => $residents]);
+    
+public function index()
+{
+    if (!session()->has('user')) {
+        return redirect()->to('/login');
     }
+
+    $db = db_connect();
+
+    $filter = $this->request->getGet('filter');
+    
+
+    $query = "SELECT * FROM residents";
+    
+    if ($filter) {
+        switch ($filter) {
+            case 'solo_parent':
+                $query .= " WHERE is_solo_parent = 1";
+                break;
+            case 'voter':
+                $query .= " WHERE is_registered_voter = 1";
+                break;
+            case 'minors':
+                $query .= " WHERE TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) < 18";
+                break;
+            case '4ps':
+                $query .= " WHERE is_4ps = 1";
+                break;
+            case 'pwd':
+                $query .= " WHERE is_pwd = 1";
+                break;
+            case 'seniors':
+                $query .= " WHERE TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) >= 60";
+                break;
+        }
+    }
+    
+    $query .= " ORDER BY created_at DESC";
+    
+    $residents = $db->query($query)->getResultArray();
+    
+    return view('modules/manage_residents', ['residents' => $residents]);
+}
+
+
 
     public function create()
     {
@@ -40,7 +74,7 @@ class ResidentController extends Controller
         
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
         
-        // Handle photo upload
+        
         $photo = $this->request->getFile('photo');
         $photoName = '';
         
@@ -49,7 +83,7 @@ class ResidentController extends Controller
             $photo->move('uploads/residents', $photoName);
         }
         
-        // Add to residents
+        
         $db->query("INSERT INTO residents (username, password, fname, middle_name, lname, birthdate, gender, civil_status, religion, is_solo_parent, is_registered_voter, is_pwd, is_4ps, contact_no, purok_no, nationality, photo) 
                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
             $username,
@@ -71,7 +105,7 @@ class ResidentController extends Controller
             $photoName
         ]);
         
-        // Add to users
+        
         $db->query("INSERT INTO users (username, password, fname, lname, role) VALUES (?, ?, ?, ?, ?)", [
             $username,
             $hashed_password,
@@ -107,7 +141,7 @@ class ResidentController extends Controller
         $fname = $this->request->getPost('fname');
         $lname = $this->request->getPost('lname');
         
-        // Get old data
+        
         $old = $db->query("SELECT * FROM residents WHERE id = ?", [$id])->getRow();
         
         if ($password) {
@@ -116,12 +150,12 @@ class ResidentController extends Controller
             $hashed_password = $old->password;
         }
         
-        // Handle photo upload
+        
         $photo = $this->request->getFile('photo');
         $photoName = $old->photo;
         
         if ($photo && $photo->isValid() && !$photo->hasMoved()) {
-            // Delete old photo if exists
+            
             if ($old->photo && file_exists('uploads/residents/' . $old->photo)) {
                 unlink('uploads/residents/' . $old->photo);
             }
@@ -129,7 +163,7 @@ class ResidentController extends Controller
             $photo->move('uploads/residents', $photoName);
         }
         
-        // Update residents
+        
         $db->query("UPDATE residents SET username=?, password=?, fname=?, middle_name=?, lname=?, birthdate=?, gender=?, civil_status=?, religion=?, is_solo_parent=?, is_registered_voter=?, is_pwd=?, is_4ps=?, contact_no=?, purok_no=?, nationality=?, photo=? WHERE id=?", [
             $username,
             $hashed_password,
@@ -151,7 +185,7 @@ class ResidentController extends Controller
             $id
         ]);
         
-        // Update users
+        
         $db->query("UPDATE users SET username=?, fname=?, lname=? WHERE username=?", [
             $username,
             $fname,
@@ -178,7 +212,7 @@ class ResidentController extends Controller
         
         $resident = $db->query("SELECT * FROM residents WHERE id = ?", [$id])->getRow();
         
-        // Delete photo if exists
+        
         if ($resident->photo && file_exists('uploads/residents/' . $resident->photo)) {
             unlink('uploads/residents/' . $resident->photo);
         }
@@ -189,12 +223,12 @@ class ResidentController extends Controller
         return redirect()->to('admin/residents');
     }
 
-    // ============ RESIDENT FUNCTIONS (WITH SESSION CHECK) ============
+    
 
-    // Show request page
+    
     public function request()
     {
-        // CHECK SESSION
+        
         if (!session()->has('user')) {
             return redirect()->to('login');
         }
@@ -202,14 +236,14 @@ class ResidentController extends Controller
         $db = db_connect();
         $user = session()->get('user');
 
-        // Get residentid from session
+        
         $residentid = $user['resident_id'] ?? null;
 
         if (!$residentid) {
             return redirect()->to('login');
         }
 
-        // Get all requests for this resident WITH resident info and community_tax_no
+        
         $requests = $db->query("
             SELECT 
                 cr.id,
@@ -237,7 +271,7 @@ class ResidentController extends Controller
 
     public function submitRequest()
     {
-        // CHECK SESSION
+        
         if (!session()->has('user')) {
             return redirect()->to('/login');
         }
@@ -245,7 +279,7 @@ class ResidentController extends Controller
         $db = db_connect();
         $user = session()->get('user');
         
-        // Get resident_id from session
+        
         $resident_id = $user['resident_id'] ?? null;
         
         if (!$resident_id) {
@@ -255,12 +289,12 @@ class ResidentController extends Controller
         $certificates = $this->request->getPost('certificates');
         $purposes = $this->request->getPost('purpose');
 
-        // Check if at least one certificate is selected
+        
         if (empty($certificates)) {
             return redirect()->back()->with('error', 'Please select at least one certificate');
         }
 
-        // Loop through each selected certificate and insert into database
+        
         foreach ($certificates as $cert) {
             $purpose = isset($purposes[$cert]) ? $purposes[$cert] : '';
 
@@ -276,10 +310,10 @@ class ResidentController extends Controller
         return redirect()->to('resident/request')->with('success', 'Request submitted successfully!');
     }
 
-    // Resident Dashboard
+    
     public function dashboard()
     {
-        // CHECK SESSION
+        
         if (!session()->has('user')) {
             return redirect()->to('/login');
         }
@@ -295,7 +329,7 @@ class ResidentController extends Controller
 
     public function profile()
     {
-        // CHECK SESSION
+        
         if (!session()->has('user')) {
             return redirect()->to('/login');
         }
@@ -303,7 +337,7 @@ class ResidentController extends Controller
         $db = db_connect();
         $user = session()->get('user');
         
-        // Get resident info by username
+        
         $resident = $db->query("SELECT * FROM residents WHERE username = ?", [$user['username']])->getRowArray();
         
         if (!$resident) {
@@ -320,7 +354,7 @@ class ResidentController extends Controller
 
     public function updateProfile()
     {
-        // CHECK SESSION
+        
         if (!session()->has('user')) {
             return redirect()->to('/login');
         }
@@ -328,14 +362,14 @@ class ResidentController extends Controller
         $db = db_connect();
         $user = session()->get('user');
         
-        // Get resident info
+        
         $resident = $db->query("SELECT * FROM residents WHERE username = ?", [$user['username']])->getRowArray();
         
         if (!$resident) {
             return redirect()->to('/login');
         }
 
-        // Handle photo upload
+        
         $photo = $this->request->getFile('photo');
         $photoName = $resident['photo'];
         
@@ -344,7 +378,7 @@ class ResidentController extends Controller
             $photo->move('uploads/residents', $photoName);
         }
 
-        // Update resident profile
+        
         $db->query("UPDATE residents SET photo = ?, contact_no = ?, purok_no = ?, nationality = ? WHERE id = ?", [
             $photoName,
             $this->request->getPost('contact_no'),

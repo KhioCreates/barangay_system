@@ -45,6 +45,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            padding: 20px;
         }
 
         .login-box {
@@ -112,13 +113,116 @@
             background-color: #b30000;
         }
 
+        .alert {
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+
         @media (max-width: 768px) {
             .login-box {
                 padding: 40px 30px;
                 margin: 20px;
+                max-width: 90%;
             }
+
             .login-title {
                 font-size: 36px;
+                margin-bottom: 30px;
+            }
+
+            .form-label {
+                font-size: 12px;
+            }
+
+            .form-control {
+                padding: 12px 20px;
+                font-size: 14px;
+                margin-bottom: 20px;
+            }
+
+            .btn-login-submit {
+                padding: 12px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            body {
+                overflow-y: auto;
+            }
+
+            .login-container {
+                height: auto;
+                min-height: 100vh;
+                padding: 15px;
+            }
+
+            .login-box {
+                padding: 30px 20px;
+                margin: 10px;
+                max-width: 100%;
+                border-radius: 20px;
+            }
+
+            .login-title {
+                font-size: 28px;
+                margin-bottom: 25px;
+            }
+
+            .form-label {
+                font-size: 11px;
+                margin-bottom: 8px;
+            }
+
+            .form-control {
+                padding: 10px 15px;
+                font-size: 13px;
+                margin-bottom: 15px;
+                border-radius: 40px;
+            }
+
+            .password-toggle {
+                font-size: 11px;
+                margin-top: -15px;
+                margin-bottom: 15px;
+            }
+
+            .btn-login-submit {
+                padding: 10px;
+                font-size: 14px;
+                border-radius: 40px;
+            }
+
+            .alert {
+                font-size: 13px;
+                padding: 10px;
+                margin-bottom: 15px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .login-box {
+                padding: 25px 15px;
+            }
+
+            .login-title {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            .form-label {
+                font-size: 10px;
+            }
+
+            .form-control {
+                padding: 8px 12px;
+                font-size: 12px;
+                margin-bottom: 12px;
+            }
+
+            .btn-login-submit {
+                padding: 10px;
+                font-size: 12px;
             }
         }
     </style>
@@ -130,10 +234,7 @@
         <div class="login-box">
             <h1 class="login-title">Login</h1>
             
-            <!-- Show validation errors -->
             <?php echo validation_list_errors(); ?>
-
-            <!-- Show flash messages -->
             <?php if (session()->getFlashdata('error')): ?>
                 <div class="alert alert-danger"><?= session()->getFlashdata('error') ?></div>
             <?php endif; ?>
@@ -149,9 +250,7 @@
                     <input type="password" class="form-control" name="password" id="password" placeholder="Enter your password" required>
                 </div>
 
-                <div class="password-toggle" onclick="togglePassword()">
-                    ••••••••••••
-                </div>
+                <br>
 
                 <button type="submit" class="btn-login-submit">Login</button>
             </form>
@@ -169,6 +268,6 @@
         }
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

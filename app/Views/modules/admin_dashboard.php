@@ -7,8 +7,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-
-    
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -85,6 +83,10 @@
             text-decoration: none;
         }
 
+        .logout-btn:hover {
+            background-color: #a01830;
+        }
+
         .content-section {
             background-color: white;
             margin: 30px;
@@ -136,12 +138,60 @@
             right: 20px;
             top: 30px;
         }
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                left: 0;
+                top: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .content-section {
+                margin: 15px;
+                padding: 20px;
+            }
+
+            .card-row {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .sidebar-header span {
+                display: none;
+            }
+
+            .dashboard-card {
+                height: 100px;
+                padding: 15px 10px;
+            }
+
+            .card-number {
+                font-size: 24px;
+                right: 10px;
+                top: 20px;
+            }
+
+            .content-section {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            .top-bar {
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="sidebar">
         <div class="sidebar-header">
-            <!-- ✅ Wrap logo and text in <a> tag -->
             <a href="<?php echo base_url('admin/dashboard'); ?>" style="text-decoration: none; color: white; display: flex; align-items: center;">
                 <img src="https://imgs.search.brave.com/_9_S3mRt93p8h2AfZyT_hS5e-yaRfmIW6yufo2z08L8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy84/LzhlL0JhcmFuZ2F5/LnN2Zw" alt="Logo" style="width: 40px; height: 40px; margin-right: 10px;">
                 <span style="font-size: 18px; font-weight: bold;">Barangay System</span>
@@ -177,13 +227,12 @@
         </div>
 
         <div class="content-section">
-            <!-- DOCUMENT REQUESTS SECTION -->
             <div class="section-title">
                 <i class="fas fa-file-alt"></i> Document Requests
             </div>
             
-            <div class="row card-row">
-                <div class="col-md-4">
+            <div class="row g-3 card-row">
+                <div class="col-12 col-sm-6 col-md-4">
                     <div class="dashboard-card">
                         <h6>Pending Request</h6>
                         <a href="<?php echo base_url('admin/certification'); ?>" class="card-btn btn-red">View</a>
@@ -192,14 +241,12 @@
                 </div>
             </div>
 
-            <!-- RESIDENTS DATA SECTION -->
             <div class="section-title">
                 <i class="fas fa-users"></i> Residents Data
             </div>
             
-            <div class="row card-row">
-                <!-- TOTAL RESIDENTS CARD -->
-                <div class="col-md-4">
+            <div class="row g-3 card-row">
+                <div class="col-12 col-sm-6 col-md-4">
                     <div class="dashboard-card">
                         <h6>Total Residents</h6>
                         <a href="<?php echo base_url('admin/residents'); ?>" class="card-btn btn-blue">View</a>
@@ -207,62 +254,55 @@
                     </div>
                 </div>
 
-                <!-- SINGLE MOTHER CARD -->
-                <div class="col-md-4">
+                <div class="col-12 col-sm-6 col-md-4">
                     <div class="dashboard-card">
                         <h6>Single Mother</h6>
-                        <a href="<?php echo base_url('admin/residents'); ?>" class="card-btn btn-darkblue">View</a>
+                        <a href="<?php echo base_url('admin/residents?filter=solo_parent'); ?>" class="card-btn btn-darkblue">View</a>
                         <div class="card-number"><?php echo $single_mother; ?></div>
                     </div>
                 </div>
 
-                <!-- REGISTERED VOTER CARD -->
-                <div class="col-md-4">
+                <div class="col-12 col-sm-6 col-md-4">
                     <div class="dashboard-card">
                         <h6>Registered Voter</h6>
-                        <a href="<?php echo base_url('admin/residents'); ?>" class="card-btn btn-gray">View</a>
+                        <a href="<?php echo base_url('admin/residents?filter=voter'); ?>" class="card-btn btn-gray">View</a>
                         <div class="card-number"><?php echo $registered_voter; ?></div>
                     </div>
                 </div>
             </div>
 
-            <div class="row card-row">
-                <!-- MINORS CARD -->
-                <div class="col-md-4">
+            <div class="row g-3 card-row">
+                <div class="col-12 col-sm-6 col-md-4">
                     <div class="dashboard-card">
                         <h6>Minors</h6>
-                        <a href="<?php echo base_url('admin/residents'); ?>" class="card-btn btn-red">View</a>
+                        <a href="<?php echo base_url('admin/residents?filter=minors'); ?>" class="card-btn btn-red">View</a>
                         <div class="card-number"><?php echo $minors; ?></div>
                     </div>
                 </div>
 
-                <!-- 4PS BENEFICIARY CARD -->
-                <div class="col-md-4">
+                <div class="col-12 col-sm-6 col-md-4">
                     <div class="dashboard-card">
                         <h6>4Ps Beneficiary</h6>
-                        <a href="<?php echo base_url('admin/residents'); ?>" class="card-btn btn-yellow">View</a>
+                        <a href="<?php echo base_url('admin/residents?filter=4ps'); ?>" class="card-btn btn-yellow">View</a>
                         <div class="card-number"><?php echo $beneficiary_4ps; ?></div>
                     </div>
                 </div>
 
-                <!-- PWD CARD -->
-                <div class="col-md-4">
+                <div class="col-12 col-sm-6 col-md-4">
                     <div class="dashboard-card">
                         <h6>PWD</h6>
-                        <a href="<?php echo base_url('admin/residents'); ?>" class="card-btn btn-orange">View</a>
+                        <a href="<?php echo base_url('admin/residents?filter=pwd'); ?>" class="card-btn btn-orange">View</a>
                         <div class="card-number"><?php echo $pwd; ?></div>
                     </div>
                 </div>
 
-                <!-- SENIOR CITIZENS CARD -->
-                <div class="col-md-4">
+                <div class="col-12 col-sm-6 col-md-4">
                     <div class="dashboard-card">
                         <h6>Senior Citizens</h6>
-                        <a href="<?php echo base_url('admin/residents'); ?>" class="card-btn btn-blue">View</a>
+                        <a href="<?php echo base_url('admin/residents?filter=seniors'); ?>" class="card-btn btn-blue">View</a>
                         <div class="card-number"><?php echo $senior_citizens; ?></div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

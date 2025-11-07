@@ -59,7 +59,7 @@
             background-color: #999;
         }
 
-             .content-section {
+        .content-section {
             background-color: white;
             margin: 30px;
             padding: 40px;
@@ -248,7 +248,6 @@
             text-transform: uppercase;
         }
 
-
         .save-btn:hover {
             background-color: #218838;
         }
@@ -268,10 +267,101 @@
         input[type="file"] {
             display: none;
         }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                left: 0;
+                top: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .content-section {
+                margin: 15px;
+                padding: 20px;
+            }
+
+            .top-bar {
+                padding: 15px;
+            }
+
+            .profile-layout {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .photo-section {
+                width: 100%;
+            }
+
+            .page-title {
+                font-size: 20px;
+            }
+
+            .info-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .editable-fields {
+                grid-template-columns: repeat(1, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .sidebar-header span {
+                display: none;
+            }
+
+            .content-section {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            .profile-container {
+                padding: 15px;
+            }
+
+            .page-title {
+                font-size: 18px;
+            }
+
+            .photo-box, .info-box {
+                padding: 15px;
+            }
+
+            .info-grid {
+                grid-template-columns: repeat(1, 1fr);
+                gap: 10px;
+            }
+
+            .photo-preview {
+                width: 150px;
+                height: 180px;
+            }
+
+            .photo-placeholder {
+                font-size: 70px;
+            }
+
+            .editable-fields {
+                gap: 10px;
+            }
+
+            .save-btn {
+                padding: 10px 20px;
+                font-size: 12px;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- SIDEBAR -->
+
     <div class="sidebar">
         <div class="sidebar-header">
             <a href="<?php echo base_url('resident/dashboard'); ?>" style="text-decoration: none; color: white; display: flex; align-items: center;">
@@ -298,163 +388,150 @@
         </ul>
     </div>
 
-    <!-- MAIN CONTENT -->
     <div class="main-content">
-        <!-- TOP BAR -->
         <div class="top-bar">
             <a href="<?php echo base_url('logout'); ?>" class="logout-btn">Logout</a>
         </div>
-
-        <!-- SUCCESS MESSAGE -->
         <?php if (session()->getFlashdata('success')): ?>
             <div class="alert alert-success">
                 <strong>Success!</strong> <?php echo session()->getFlashdata('success'); ?>
             </div>
         <?php endif; ?>
 
-        <!-- PROFILE CONTAINER -->
+        <div class="content-section">
+            <div class="profile-container">
+                <div class="page-title">Manage Details</div>
 
-    <div class="content-section">
-        <div class="profile-container">
-            <div class="page-title">Manage Details</div>
+                <form method="POST" action="<?php echo base_url('resident/profile/update'); ?>" enctype="multipart/form-data">
+                    <?php echo csrf_field(); ?>
 
-            <form method="POST" action="<?php echo base_url('resident/profile/update'); ?>" enctype="multipart/form-data">
-                <?php echo csrf_field(); ?>
-
-                <div class="profile-layout">
-                    <!-- PHOTO SECTION -->
-                    <div class="photo-section">
-                        <div class="photo-box">
-                            <div class="photo-box-title">Photo</div>
-                            <div class="photo-preview">
-                                <?php if (!empty($resident['photo'])): ?>
-                                    <img src="<?php echo base_url('uploads/residents/' . htmlspecialchars($resident['photo'])); ?>" alt="Profile Photo" id="photoDisplay">
-                                <?php else: ?>
-                                    <i class="fas fa-user photo-placeholder"></i>
-                                <?php endif; ?>
+                    <div class="profile-layout">
+                        <div class="photo-section">
+                            <div class="photo-box">
+                                <div class="photo-box-title">Photo</div>
+                                <div class="photo-preview">
+                                    <?php if (!empty($resident['photo'])): ?>
+                                        <img src="<?php echo base_url('uploads/residents/' . htmlspecialchars($resident['photo'])); ?>" alt="Profile Photo" id="photoDisplay">
+                                    <?php else: ?>
+                                        <i class="fas fa-user photo-placeholder"></i>
+                                    <?php endif; ?>
+                                </div>
+                                <label for="photoInput" class="browse-btn">
+                                    <i class="fas fa-folder-open"></i> Browse
+                                </label>
+                                <input type="file" name="photo" id="photoInput" accept="image/*" onchange="previewPhoto(this)">
                             </div>
-                            <label for="photoInput" class="browse-btn">
-                                <i class="fas fa-folder-open"></i> Browse
-                            </label>
-                            <input type="file" name="photo" id="photoInput" accept="image/*" onchange="previewPhoto(this)">
                         </div>
-                    </div>
 
-                    <!-- INFO SECTION -->
-                    <div class="info-section">
-                        <div class="info-box">
-                            <div class="info-box-title">Personal Information</div>
+                        <div class="info-section">
+                            <div class="info-box">
+                                <div class="info-box-title">Personal Information</div>
+                                <div class="info-grid">
+                                    <div class="info-field">
+                                        <label>Last Name</label>
+                                        <div class="value"><?php echo htmlspecialchars($resident['lname']); ?></div>
+                                    </div>
+                                    <div class="info-field">
+                                        <label>First Name</label>
+                                        <div class="value"><?php echo htmlspecialchars($resident['fname']); ?></div>
+                                    </div>
+                                    <div class="info-field">
+                                        <label>Middle Name</label>
+                                        <div class="value"><?php echo htmlspecialchars($resident['middle_name'] ?? ''); ?></div>
+                                    </div>
+                                    <div class="info-field">
+                                    </div>
 
-                            <!-- READ-ONLY FIELDS -->
-                            <div class="info-grid">
-                                <div class="info-field">
-                                    <label>Last Name</label>
-                                    <div class="value"><?php echo htmlspecialchars($resident['lname']); ?></div>
-                                </div>
-                                <div class="info-field">
-                                    <label>First Name</label>
-                                    <div class="value"><?php echo htmlspecialchars($resident['fname']); ?></div>
-                                </div>
-                                <div class="info-field">
-                                    <label>Middle Name</label>
-                                    <div class="value"><?php echo htmlspecialchars($resident['middle_name'] ?? ''); ?></div>
-                                </div>
-                                <div class="info-field">
-                                    <!-- Empty space -->
-                                </div>
-
-                                <div class="info-field">
-                                    <label>Date of Birth</label>
-                                    <div class="value"><?php echo htmlspecialchars($resident['birthdate']); ?></div>
-                                </div>
-                                <div class="info-field">
-                                    <label>Age</label>
-                                    <div class="value">
-                                        <?php 
-                                            if (!empty($resident['birthdate']) && $resident['birthdate'] != '0000-00-00') {
-                                                $bday = $resident['birthdate'];
-                                                $birthYear = substr($bday, 0, 4);
-                                                $birthMonth = substr($bday, 5, 2);
-                                                $birthDay = substr($bday, 8, 2);
-                                                
-                                                $currentYear = date('Y');
-                                                $currentMonth = date('m');
-                                                $currentDay = date('d');
-                                                
-                                                $age = $currentYear - $birthYear;
-                                                
-                                                if ($currentMonth < $birthMonth || ($currentMonth == $birthMonth && $currentDay < $birthDay)) {
-                                                    $age = $age - 1;
+                                    <div class="info-field">
+                                        <label>Date of Birth</label>
+                                        <div class="value"><?php echo htmlspecialchars($resident['birthdate']); ?></div>
+                                    </div>
+                                    <div class="info-field">
+                                        <label>Age</label>
+                                        <div class="value">
+                                            <?php 
+                                                if (!empty($resident['birthdate']) && $resident['birthdate'] != '0000-00-00') {
+                                                    $bday = $resident['birthdate'];
+                                                    $birthYear = substr($bday, 0, 4);
+                                                    $birthMonth = substr($bday, 5, 2);
+                                                    $birthDay = substr($bday, 8, 2);
+                                                    
+                                                    $currentYear = date('Y');
+                                                    $currentMonth = date('m');
+                                                    $currentDay = date('d');
+                                                    
+                                                    $age = $currentYear - $birthYear;
+                                                    
+                                                    if ($currentMonth < $birthMonth || ($currentMonth == $birthMonth && $currentDay < $birthDay)) {
+                                                        $age = $age - 1;
+                                                    }
+                                                    
+                                                    echo $age;
+                                                } else {
+                                                    echo '-';
                                                 }
-                                                
-                                                echo $age;
-                                            } else {
-                                                echo '-';
-                                            }
-                                        ?>
+                                            ?>
+                                        </div>
+                                    </div>
+
+                                    <div class="info-field">
+                                        <label>Religion</label>
+                                        <div class="value"><?php echo htmlspecialchars($resident['religion']); ?></div>
+                                    </div>
+                                    <div class="info-field">
+                                        <label>Gender</label>
+                                        <div class="value"><?php echo htmlspecialchars($resident['gender']); ?></div>
+                                    </div>
+
+                                    <div class="info-field">
+                                        <label>Civil Status</label>
+                                        <div class="value"><?php echo htmlspecialchars($resident['civil_status']); ?></div>
+                                    </div>
+                                    <div class="info-field">
+                                        <label>Solo Parent</label>
+                                        <div class="value"><?php echo $resident['is_solo_parent'] ? 'Yes' : 'No'; ?></div>
+                                    </div>
+                                    <div class="info-field">
+                                        <label>Registered Voter</label>
+                                        <div class="value"><?php echo $resident['is_registered_voter'] ? 'Yes' : 'No'; ?></div>
+                                    </div>
+                                    <div class="info-field">
+                                        <label>PWD</label>
+                                        <div class="value"><?php echo $resident['is_pwd'] ? 'Yes' : 'No'; ?></div>
+                                    </div>
+
+                                    <div class="info-field">
+                                        <label>4PS Beneficiary</label>
+                                        <div class="value"><?php echo $resident['is_4ps'] ? 'Yes' : 'No'; ?></div>
                                     </div>
                                 </div>
-
-                                <div class="info-field">
-                                    <label>Religion</label>
-                                    <div class="value"><?php echo htmlspecialchars($resident['religion']); ?></div>
+                                <div class="editable-fields">
+                                    <div class="info-field">
+                                        <label>Contact No.</label>
+                                        <input type="text" name="contact_no" value="<?php echo htmlspecialchars($resident['contact_no'] ?? ''); ?>" pattern="[0-9]{11}" maxlength="11" placeholder="09XXXXXXXXX" title="Please enter exactly 11 digits">
+                                    </div>
+                                    <div class="info-field">
+                                        <label>Purok No.</label>
+                                        <select name="purok_no">
+                                            <option value="">Select Purok</option>
+                                            <?php for($i = 1; $i <= 5; $i++): ?>
+                                                <option value="<?php echo $i; ?>" <?php echo ($resident['purok_no'] == $i) ? 'selected' : ''; ?>>
+                                                    Purok <?php echo $i; ?>
+                                                </option>
+                                            <?php endfor; ?>
+                                        </select>
+                                    </div>
+                                    <div class="info-field">
+                                        <label>Nationality</label>
+                                        <input type="text" name="nationality" value="<?php echo htmlspecialchars($resident['nationality'] ?? ''); ?>">
+                                    </div>
                                 </div>
-                                <div class="info-field">
-                                    <label>Gender</label>
-                                    <div class="value"><?php echo htmlspecialchars($resident['gender']); ?></div>
-                                </div>
-
-                                <div class="info-field">
-                                    <label>Civil Status</label>
-                                    <div class="value"><?php echo htmlspecialchars($resident['civil_status']); ?></div>
-                                </div>
-                                <div class="info-field">
-                                    <label>Solo Parent</label>
-                                    <div class="value"><?php echo $resident['is_solo_parent'] ? 'Yes' : 'No'; ?></div>
-                                </div>
-                                <div class="info-field">
-                                    <label>Registered Voter</label>
-                                    <div class="value"><?php echo $resident['is_registered_voter'] ? 'Yes' : 'No'; ?></div>
-                                </div>
-                                <div class="info-field">
-                                    <label>PWD</label>
-                                    <div class="value"><?php echo $resident['is_pwd'] ? 'Yes' : 'No'; ?></div>
-                                </div>
-
-                                <div class="info-field">
-                                    <label>4PS Beneficiary</label>
-                                    <div class="value"><?php echo $resident['is_4ps'] ? 'Yes' : 'No'; ?></div>
-                                </div>
+                                <button type="submit" class="save-btn">Save</button>
                             </div>
-
-                            <!-- EDITABLE FIELDS -->
-                            <div class="editable-fields">
-                                <div class="info-field">
-                                    <label>Contact No.</label>
-                                    <input type="text" name="contact_no" value="<?php echo htmlspecialchars($resident['contact_no'] ?? ''); ?>">
-                                </div>
-                                <div class="info-field">
-                                    <label>Purok No.</label>
-                                    <select name="purok_no">
-                                        <option value="">Select Purok</option>
-                                        <?php for($i = 1; $i <= 10; $i++): ?>
-                                            <option value="<?php echo $i; ?>" <?php echo ($resident['purok_no'] == $i) ? 'selected' : ''; ?>>
-                                                Purok <?php echo $i; ?>
-                                            </option>
-                                        <?php endfor; ?>
-                                    </select>
-                                </div>
-                                <div class="info-field">
-                                    <label>Nationality</label>
-                                    <input type="text" name="nationality" value="<?php echo htmlspecialchars($resident['nationality'] ?? ''); ?>">
-                                </div>
-                            </div>
-
-                            <button type="submit" class="save-btn">Save</button>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -468,8 +545,6 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
-
-        </div>
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>

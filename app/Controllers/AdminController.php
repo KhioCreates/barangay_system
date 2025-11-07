@@ -14,7 +14,7 @@ class AdminController extends Controller
 
         $db = db_connect();
         
-        // COUNT pending requests from database
+
         $pending = $db->query("SELECT COUNT(*) as count FROM certificate_requests WHERE status = 'Pending'")->getRow();
         $pending_requests = $pending->count;
         
@@ -86,8 +86,6 @@ class AdminController extends Controller
         $gender = $this->request->getPost('gender');
         $civil_status = $this->request->getPost('civil_status');
         $contact = $this->request->getPost('contact');
-        
-        // HANDLE PHOTO UPLOAD
         $photo = '';
         $file = $this->request->getFile('photo');
         
@@ -130,7 +128,6 @@ class AdminController extends Controller
 
         $db = db_connect();
         
-        // ✅ GET FULL RESIDENT DATA (middle_name and contact_no)
         $cert_requests = $db->query("
             SELECT cr.*, 
                    r.fname, 
@@ -155,15 +152,14 @@ public function approve_certificate($id)
 
     $db = db_connect();
     
-    // Get tax number from URL parameter
+
     $tax_number = $this->request->getGet('taxNo');
     
-    // If no tax number passed, generate one (fallback)
+
     if (empty($tax_number)) {
         $tax_number = rand(1000, 9999);
     }
-    
-    // Update certificate with Approved status and tax number
+
     $db->query("UPDATE certificate_requests SET status = 'Approved', community_tax_no = ? WHERE id = ?", [$tax_number, $id]);
 
     return redirect()->to('/admin/certification')->with('success', 'Certificate approved successfully!');
@@ -171,8 +167,6 @@ public function approve_certificate($id)
 
 
 
-    // ✅ UPDATED: Save rejection reason
-// ✅ UPDATE THIS FUNCTION ONLY
     public function reject_certificate($id)
     {
         if (!session()->has('user')) {
@@ -182,7 +176,6 @@ public function approve_certificate($id)
         $db = db_connect();
         $reason = $this->request->getGet('reason');
         
-        // ✅ Update with disapproval reason
         $db->query("UPDATE certificate_requests SET status = 'Rejected', remarks = ? WHERE id = ?", [$reason, $id]);
 
         return redirect()->to('/admin/certification')->with('error', 'Certificate rejected.');

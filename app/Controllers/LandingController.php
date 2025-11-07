@@ -8,10 +8,8 @@ class LandingController extends BaseController
     {
         $db = db_connect();
         
-        // Get all officials from database
         $officials = $db->query("SELECT first_name, last_name, photo, position FROM officials ORDER BY position DESC")->getResultArray();
         
-        // Count officials by position
         $captain = count(array_filter($officials, fn($o) => $o['position'] == 'Barangay Captain'));
         $secretary = count(array_filter($officials, fn($o) => $o['position'] == 'Barangay Secretary'));
         $treasurer = count(array_filter($officials, fn($o) => $o['position'] == 'Barangay Treasurer'));

@@ -82,15 +82,16 @@
             text-decoration: none;
         }
 
+        .logout-btn:hover {
+            background-color: #b30000;
+        }
+
         .content-section {
             background-color: white;
             margin: 30px;
             padding: 40px;
             border-radius: 10px;
         }
-
-
-
 
         .page-title {
             font-size: 28px;
@@ -113,20 +114,6 @@
         .btn-add:hover {
             background-color: #b30000;
             color: white;
-        }
-
-        .logout-btn {
-            background-color: #dc0000;
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .logout-btn:hover {
-            background-color: #b30000;
         }
 
         table {
@@ -218,9 +205,9 @@
 
         .form-group input:focus,
         .form-group select:focus {
-            outline: none;
-            border-color: #dc0000;
-            box-shadow: 0 0 5px rgba(220, 0, 0, 0.3);
+            outline: none !important;
+            border-color: #dc0000 !important;
+            box-shadow: 0 0 5px rgba(220, 0, 0, 0.3) !important;
         }
 
         .button-group {
@@ -261,10 +248,68 @@
             background-color: #555;
             color: white;
         }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                left: 0;
+                top: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .content-section {
+                margin: 15px;
+                padding: 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .sidebar-header span {
+                display: none;
+            }
+
+            .page-title {
+                font-size: 20px;
+            }
+
+            .content-section {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            .modal-box {
+                padding: 30px 20px;
+            }
+
+            .modal-title {
+                font-size: 20px;
+            }
+
+            .top-bar {
+                padding: 15px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            .btn-add {
+                padding: 10px 15px;
+                font-size: 12px;
+            }
+        }
     </style>
 </head>
 <body>
-     <!-- SIDEBAR -->
     <div class="sidebar">
         <div class="sidebar-header">
             <a href="<?php echo base_url('admin/dashboard'); ?>" style="text-decoration: none; color: white; display: flex; align-items: center;">
@@ -296,63 +341,59 @@
         </ul>
     </div>
 
-
-    <!-- MAIN CONTENT -->
     <div class="main-content">
         <div class="top-bar">
             <a href="<?php echo base_url('logout'); ?>" class="logout-btn">Logout</a>
         </div>
 
         <div class="content-section">
-
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <div class="page-title">Officials List</div>
                 <button class="btn-add" onclick="openAddModal()">
                     <i class="fas fa-plus"></i> Add Official
                 </button>
             </div>
-
-            <!-- OFFICIALS TABLE -->
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Position</th>
-                        <th>Gender</th>
-                        <th>Civil Status</th>
-                        <th>Contact No.</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (!empty($officials)): ?>
-                        <?php foreach ($officials as $official): ?>
-                            <tr>
-                                <td><?php echo $official['first_name']; ?></td>
-                                <td><?php echo $official['last_name']; ?></td>
-                                <td><?php echo $official['position']; ?></td>
-                                <td><?php echo $official['gender']; ?></td>
-                                <td><?php echo $official['civil_status']; ?></td>
-                                <td><?php echo $official['contact_no']; ?></td>
-                                <td>
-                                    <a href="<?php echo base_url('admin/officials/delete/' . $official['id']); ?>" class="btn-delete" onclick="return confirm('Delete this official?')">
-                                        <i class="fas fa-trash"></i> Delete
-                                    </a>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
+            <div style="overflow-x: auto;">
+                <table class="table table-striped">
+                    <thead>
                         <tr>
-                            <td colspan="7" style="text-align: center; padding: 30px;">No officials found</td>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Position</th>
+                            <th>Gender</th>
+                            <th>Civil Status</th>
+                            <th>Contact No.</th>
+                            <th>Action</th>
                         </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php if (!empty($officials)): ?>
+                            <?php foreach ($officials as $official): ?>
+                                <tr>
+                                    <td><?php echo $official['first_name']; ?></td>
+                                    <td><?php echo $official['last_name']; ?></td>
+                                    <td><?php echo $official['position']; ?></td>
+                                    <td><?php echo $official['gender']; ?></td>
+                                    <td><?php echo $official['civil_status']; ?></td>
+                                    <td><?php echo $official['contact_no']; ?></td>
+                                    <td>
+                                        <a href="<?php echo base_url('admin/officials/delete/' . $official['id']); ?>" class="btn-delete" onclick="return confirm('Delete this official?')">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="7" style="text-align: center; padding: 30px;">No officials found</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
-    <!-- ADD MODAL OVERLAY -->
     <div class="modal-overlay" id="addModal">
         <div class="modal-box">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
@@ -360,75 +401,71 @@
                 <button style="background: none; border: none; font-size: 24px; cursor: pointer; color: #999;" onclick="closeAddModal()">×</button>
             </div>
 
-<form method="POST" action="<?php echo base_url('admin/officials/save'); ?>" enctype="multipart/form-data">
-    <?php echo csrf_field(); ?>
-    
-    <!-- Row 1: First Name and Last Name -->
-    <div class="form-row">
-        <div class="form-group">
-            <label>First Name</label>
-            <input type="text" name="fname" required>
-        </div>
-        <div class="form-group">
-            <label>Last Name</label>
-            <input type="text" name="lname" required>
+            <form method="POST" action="<?php echo base_url('admin/officials/save'); ?>" enctype="multipart/form-data">
+                <?php echo csrf_field(); ?>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" name="fname" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" name="lname" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <select name="gender" required>
+                            <option value="">Select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Civil Status</label>
+                        <select name="civil_status" required>
+                            <option value="">Select</option>
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+                            <option value="Divorced">Divorced</option>
+                            <option value="Widowed">Widowed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Contact No.</label>
+                        <input type="text" name="contact" required pattern="[0-9]{11}" maxlength="11" placeholder="09XXXXXXXXX" title="Please enter exactly 11 digits">
+                    </div>
+                    <div class="form-group">
+                        <label>Position</label>
+                        <select name="position" required>
+                            <option value="">Select</option>
+                            <option value="Barangay Captain">Barangay Captain</option>
+                            <option value="Barangay Secretary">Barangay Secretary</option>
+                            <option value="Barangay Treasurer">Barangay Treasurer</option>
+                            <option value="Barangay Kagawad">Barangay Kagawad</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Photo</label>
+                        <input type="file" name="photo" accept="image/*" required>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <button type="submit" class="btn btn-success">Add Official</button>
+                </div>
+            </form>
         </div>
     </div>
-
-    <!-- Row 2: Gender and Civil Status -->
-    <div class="form-row">
-        <div class="form-group">
-            <label>Gender</label>
-            <select name="gender" required>
-                <option value="">Select</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>Civil Status</label>
-            <select name="civil_status" required>
-                <option value="">Select</option>
-                <option value="Single">Single</option>
-                <option value="Married">Married</option>
-                <option value="Divorced">Divorced</option>
-                <option value="Widowed">Widowed</option>
-            </select>
-        </div>
-    </div>
-
-    <!-- Row 3: Contact No. and Position -->
-    <div class="form-row">
-        <div class="form-group">
-            <label>Contact No.</label>
-            <input type="text" name="contact" required>
-        </div>
-        <div class="form-group">
-            <label>Position</label>
-            <select name="position" required>
-                <option value="">Select</option>
-                <option value="Barangay Captain">Barangay Captain</option>
-                <option value="Barangay Secretary">Barangay Secretary</option>
-                <option value="Barangay Treasurer">Barangay Treasurer</option>
-                <option value="Barangay Kagawad">Barangay Kagawad</option>
-            </select>
-        </div>
-    </div>
-
-    <!-- Row 4: Photo Upload -->
-    <div class="form-row">
-        <div class="form-group">
-            <label>Photo</label>
-            <input type="file" name="photo" accept="image/*" required>
-        </div>
-    </div>
-
-    <!-- Submit Button -->
-    <div style="text-align: center; margin-top: 20px;">
-        <button type="submit" class="btn btn-success">Add Official</button>
-    </div>
-</form>
-
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -440,7 +477,6 @@
             document.getElementById('addModal').classList.remove('show');
         }
 
-        // Close modal when clicking outside
         document.getElementById('addModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeAddModal();

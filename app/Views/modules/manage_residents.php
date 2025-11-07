@@ -212,6 +212,12 @@
             font-size: 14px;
         }
 
+        .form-col input:focus,
+        .form-col select:focus {
+            outline: none !important;
+            border-color: #dc0000 !important;
+            box-shadow: 0 0 5px rgba(220, 0, 0, 0.3) !important;
+        }
 
         .button-row {
             text-align: center;
@@ -255,6 +261,79 @@
             border-radius: 10px;
             border: 2px solid #ddd;
             margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                left: 0;
+                top: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .content-section {
+                margin: 15px;
+                padding: 20px;
+            }
+
+            .top-bar {
+                padding: 15px;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            table th, table td {
+                padding: 8px;
+            }
+
+            .btn-edit, .btn-delete {
+                padding: 4px 10px;
+                font-size: 10px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .sidebar-header span {
+                display: none;
+            }
+
+            .content-section {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            .page-title {
+                font-size: 16px;
+            }
+
+            .btn-add {
+                width: 100%;
+            }
+
+            table {
+                font-size: 11px;
+            }
+
+            table th, table td {
+                padding: 6px;
+            }
+
+            .btn-edit, .btn-delete {
+                padding: 3px 8px;
+                font-size: 9px;
+            }
         }
     </style>
 </head>
@@ -348,7 +427,6 @@
         </div>
     </div>
 
-    <!-- ADD MODAL -->
     <div class="modal fade" id="addModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -457,14 +535,21 @@
                             </div>
                             <div class="form-col">
                                 <label>Contact No.</label>
-                                <input type="text" name="contact_no">
+                                <input type="text" name="contact_no" pattern="[0-9]{11}" maxlength="11" placeholder="09XXXXXXXXX" title="Please enter exactly 11 digits">
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-col">
                                 <label>Purok No.</label>
-                                <input type="text" name="purok_no">
+                                <select name="purok_no">
+                                    <option value="">Select Purok</option>
+                                    <option value="1">Purok 1</option>
+                                    <option value="2">Purok 2</option>
+                                    <option value="3">Purok 3</option>
+                                    <option value="4">Purok 4</option>
+                                    <option value="5">Purok 5</option>
+                                </select>
                             </div>
                             <div class="form-col">
                                 <label>Nationality</label>
@@ -485,7 +570,6 @@
         </div>
     </div>
 
-    <!-- EDIT MODAL -->
     <div class="modal fade" id="editModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -600,14 +684,21 @@
                             </div>
                             <div class="form-col">
                                 <label>Contact No.</label>
-                                <input type="text" name="contact_no" id="editContact">
+                                <input type="text" name="contact_no" id="editContact" pattern="[0-9]{11}" maxlength="11" placeholder="09XXXXXXXXX" title="Please enter exactly 11 digits">
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-col">
                                 <label>Purok No.</label>
-                                <input type="text" name="purok_no" id="editPurok">
+                                <select name="purok_no" id="editPurok">
+                                    <option value="">Select</option>
+                                    <option value="1">Purok 1</option>
+                                    <option value="2">Purok 2</option>
+                                    <option value="3">Purok 3</option>
+                                    <option value="4">Purok 4</option>
+                                    <option value="5">Purok 5</option>
+                                </select>
                             </div>
                             <div class="form-col">
                                 <label>Nationality</label>
@@ -618,7 +709,6 @@
                                 <input type="file" name="photo" accept="image/*">
                             </div>
                         </div>
-
                         <div class="photo-preview" id="photoPreview">
                             <span style="font-size: 12px; color: #666;">No photo uploaded yet</span>
                         </div>

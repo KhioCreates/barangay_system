@@ -100,10 +100,56 @@
             font-weight: bold;
             color: #333;
         }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                left: 0;
+                top: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .content-section {
+                margin: 15px;
+                padding: 20px;
+            }
+
+            .top-bar {
+                padding: 15px;
+            }
+
+            .welcome-text {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .sidebar-header span {
+                display: none;
+            }
+
+            .content-section {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            .welcome-text {
+                font-size: 20px;
+            }
+
+            .logout-btn {
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- SIDEBAR -->
     <div class="sidebar">
         <div class="sidebar-header">
             <a href="<?php echo base_url('resident/dashboard'); ?>" style="text-decoration: none; color: white; display: flex; align-items: center;">
@@ -130,18 +176,16 @@
         </ul>
     </div>
 
-    <!-- MAIN CONTENT -->
     <div class="main-content">
-        <!-- TOP BAR -->
         <div class="top-bar">
             <a href="<?php echo base_url('logout'); ?>" class="logout-btn">Logout</a>
         </div>
 
-        <!-- CONTENT SECTION -->
         <div class="content-section">
             <div class="welcome-text">Welcome, <?php echo htmlspecialchars($user['fname']); ?>!</div>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
